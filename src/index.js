@@ -1,24 +1,30 @@
 'use strict';
 
 function Game(canvas){
-    console.log(window);
     this.ctx = canvas.getContext('2d');
     window.addEventListener('keydown', move.bind(this), false);
 
     this.wormi = new Worm();
-    let b = new Ball(0, 25, 'blue');
-    let c = new Ball(1, 25, 'green');
+    let b = new Ball(0, 15, 'blue');
+    let c = new Ball(1, 15, 'blue');
+    let d = new Ball(2, 15, 'blue');
+    let e = new Ball(3, 15, 'blue');
+    let f = new Ball(4, 15, 'blue');
+    let g = new Ball(5, 15, 'blue');
     this.wormi.add(b);
-    this.wormi.paint(this.ctx, {x: 25, y: 25});
-    // ctx.clearRect(0, 0, 600, 60);
     this.wormi.add(c);
-    // wormi.paint(ctx, {x: 50, y: 0});
-
-    // let c = new Ball(1, 35, 'blue');
-    // c.paint(ctx, {x: 75, y: 75});
-    // let d = new Ball(2, 25, 'blue');
-    // d.paint(ctx, {x: 75, y: 75});
+    this.wormi.add(d);
+    this.wormi.add(e);
+    this.wormi.add(f);
+    this.wormi.add(g);
+    // this.wormi.paint(this.ctx);
+    setInterval(loop.bind(this), 30);
 
 };
+
+function loop() {
+    this.ctx.clearRect(0, 0, 600, 600);
+    this.wormi.paint(this.ctx);
+}
 
 new Game(document.getElementById('canvas'));
