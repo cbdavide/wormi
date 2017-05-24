@@ -18,10 +18,13 @@ class Ball {
         this.y = util.mod((this.y + y), 600);
     }
     paint(ctx) {
-        console.log(this.x, this.y);
+        ctx.strokeStyle = this.color;
+        ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radix, 0, Math.PI * 2, true);
+        ctx.closePath();
         ctx.stroke();
+        ctx.fill();
     }
 }
 
@@ -52,7 +55,9 @@ class Worm {
 }
 
 function* generate_balls(n, radix) {
-    for(let i=0; i<n; i++)
-        yield(new Ball(i, 'blue', radix));
+    for(let i=1; i<=n; i++) {
+        let color = util.rgb(i);
+        yield(new Ball(i, radix, color));
+    }
     return undefined;
 }
