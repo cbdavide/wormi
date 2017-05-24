@@ -8,10 +8,17 @@ class Ball {
         this.x = 0;
         this.y = 0;
     }
-    paint(ctx, pos) {
-        this.x = pos.x;
-        this.y = pos.y;
-
+    setPos(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    move(x, y) {
+        console.log(typeof(x), typeof(y));
+        this.x = util.mod((this.x + x), 600);
+        this.y = util.mod((this.y + y), 600);
+    }
+    paint(ctx) {
+        console.log(this.x, this.y);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radix, 0, Math.PI * 2, true);
         ctx.stroke();
@@ -25,20 +32,22 @@ class Worm {
     add(ball) {
         this.balls.push(ball);
     }
-    paint(ctx, pos) {
+    move(x, y) {
         let tempx = this.balls[0].x;
         let tempy = this.balls[0].y;
-
-        this.balls[0].paint(ctx, {
-            x: tempx + pos.x,
-            y: tempx + pos.y
-        });
+        this.balls[0].move(x, y);
 
         for(let i=1; i<this.balls.length; i++) {
-            this.balls[0].paint(ctx, {x: tempx, y: tempx});
-            tempx = this.balls[i].x;
-            tempy = this.balls[i].y;
+            let xx = this.balls[i].x;
+            let yy = this.balls[i].y;
+            this.balls[i].setPos(tempx, tempy);
+            tempx = xx;
+            tempy = yy;
         }
+    }
+    paint(ctx) {
+        for(let ball of this.balls)
+            ball.paint(ctx)
     }
 }
 
