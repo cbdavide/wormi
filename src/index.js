@@ -5,18 +5,21 @@ function Game(canvas){
     window.addEventListener('keydown', move.bind(this), false);
 
     this.wormi = new Worm();
-    let b = new Ball(0, 15, 'blue');
-    let c = new Ball(1, 15, 'blue');
-    let d = new Ball(2, 15, 'blue');
-    let e = new Ball(3, 15, 'blue');
-    let f = new Ball(4, 15, 'blue');
-    let g = new Ball(5, 15, 'blue');
+
+    let generador = generate_balls(100, 15);
+
+    let b = generador.next().value;
+    console.log(b);
+    let c = generador.next().value;
+    let d = generador.next().value;
+    let e = generador.next().value;
+    let f = generador.next().value;
+
     this.wormi.add(b);
     this.wormi.add(c);
     this.wormi.add(d);
     this.wormi.add(e);
-    this.wormi.add(f);
-    this.wormi.add(g);
+
     // this.wormi.paint(this.ctx);
     setInterval(loop.bind(this), 30);
 
