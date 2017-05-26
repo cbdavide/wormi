@@ -35,30 +35,25 @@ class Worm {
     add(ball) {
         this.balls.push(ball);
     }
-    move(middlewares, x, y) {
-
+    move(x, y) {
         let f = movement_middlewares;
-        Promise.all([
-            f[0](this.balls, this.positions, x ,y),
-            f[1](this.balls, this.positions, x ,y),
-        ])
-        .then(() => {
-            console.log('Buena perro');
-            //Move motherfucker, move
+
+        Promise.all(f.map(func => {return func.call(this, x, y)}))
+        .then(() => { // The worm can move
             let tx = this.balls[0].x;
             let ty = this.balls[0].y;
             this.balls[0].move(x, y);
             for(let i=1; i<this.balls.length; i++) {
                 let xx = this.balls[i].x;
                 let yy = this.balls[i].y;
-                this.positions[[x, y]] = undefined;
-                this.positions[[tx, ty]] = true;
+                this.positions[[xx, yy]] = undefined;
+                this.positions[[tx, ty]] = this.balls[i].idx;
                 this.balls[i].setPos(tx, ty);
                 tx = xx; ty = yy;
             }
         })
         .catch((err) => {
-            console.log('What happened ?')
+            //TODO: Handle the error
             console.log(err);
         })
     }
