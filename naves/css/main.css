@@ -1,0 +1,65 @@
+body {
+    background: url("../images/Galaxia.png") no-repeat left;
+	
+    font: 14px 'Arial',sans-serif;
+    text-align: center;
+}
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+a:hover {
+    color: #ffba00;
+}
+div.contenedor {
+    width: 100%;
+    margin: 0 auto;
+}
+div.izquierda, div.derecha {
+    width: 300px;
+}
+div.izquierda {
+    float: left;
+    text-align: left;
+}
+div.juego {
+
+}
+div.juego canvas {
+    background-color:#333322;
+	border:1px solid;
+	border-color:#ffffff;
+	border-radius:15px;
+	margin:2em;
+	padding:1em;
+	text-align: center;
+}
+div.derecha {
+    float: right;
+}
+
+.negrita {
+    font-weight: bold;
+}
+ul.lista {
+    margin: 1px 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+}
+ul.lista li {
+    padding: 45px 0;
+}
+ul.lista li.firefox, ul.lista li.chrome, ul.lista li.safari, ul.lista li.izquierda, ul.lista li.derecha, ul.lista li.espacio {
+    padding-left: 1px;
+}
+ul.lista li.izquierda {
+    background: url("../images/Controles.png") no-repeat left;
+}
+ul.lista li.derecha {
+    background: url("../images/Espacio.png") no-repeat left;
+}
+
+ul.lista li.titulo {
+    font-weight: bold;
+}
