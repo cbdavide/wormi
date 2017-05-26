@@ -13,7 +13,6 @@ class Ball {
         this.y = y;
     }
     move(x, y) {
-        console.log(typeof(x), typeof(y));
         this.x = util.mod((this.x + x), 600);
         this.y = util.mod((this.y + y), 600);
     }
@@ -31,22 +30,37 @@ class Ball {
 class Worm {
     constructor() {
         this.balls = [];
+        this.positions = {};
     }
     add(ball) {
         this.balls.push(ball);
     }
-    move(x, y) {
-        let tempx = this.balls[0].x;
-        let tempy = this.balls[0].y;
-        this.balls[0].move(x, y);
+    move(middlewares, x, y) {
 
-        for(let i=1; i<this.balls.length; i++) {
-            let xx = this.balls[i].x;
-            let yy = this.balls[i].y;
-            this.balls[i].setPos(tempx, tempy);
-            tempx = xx;
-            tempy = yy;
-        }
+        let f = movement_middlewares;
+        Promise.all([
+            f[0](this.balls, this.positions, x ,y),
+            f[1](this.balls, this.positions, x ,y),
+        ])
+        .then(() => {
+            console.log('Buena perro');
+            //Move motherfucker, move
+            let tx = this.balls[0].x;
+            let ty = this.balls[0].y;
+            this.balls[0].move(x, y);
+            for(let i=1; i<this.balls.length; i++) {
+                let xx = this.balls[i].x;
+                let yy = this.balls[i].y;
+                this.positions[[x, y]] = undefined;
+                this.positions[[tx, ty]] = true;
+                this.balls[i].setPos(tx, ty);
+                tx = xx; ty = yy;
+            }
+        })
+        .catch((err) => {
+            console.log('What happened ?')
+            console.log(err);
+        })
     }
     paint(ctx) {
         for(let ball of this.balls)
