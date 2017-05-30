@@ -54,6 +54,10 @@ class Worm {
         })
         .catch((err) => {
             //TODO: Handle the error
+            if(err.code === 0) {
+                //The direction shouldn't be changed
+                this.rollback();
+            }
             console.log(err);
         })
     }

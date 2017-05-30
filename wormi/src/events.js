@@ -1,14 +1,14 @@
 'use strict';
 
 function move(e) {
-
+    this.safe_direction = this.actual_direction;
     if(e.keyCode == 37) { // Right
-        this.wormi.move(-20, 0);
+        this.actual_direction = 'E';
     } else if(e.keyCode == 38) { // Up
-        this.wormi.move(0, -20);
+        this.actual_direction = 'N';
     } else if(e.keyCode == 39) { // Left
-        this.wormi.move(20, 0);
+        this.actual_direction = 'W';
     } else if (e.keyCode == 40) { // Down
-        this.wormi.move(0, 20);
+        this.actual_direction = 'S';
     }
 }
