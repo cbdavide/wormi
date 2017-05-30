@@ -8,8 +8,8 @@ let movement_middlewares = [
 
 function check_backards(x, y) {
     return new Promise((resolve, reject) => {
-        let tx = this.balls[0].x + x;
-        let ty = this.balls[0].y + y;
+        let tx = util.mod(this.balls[0].x + x, 600);
+        let ty = util.mod(this.balls[0].y + y, 600);
 
         if(this.balls[1] && this.balls[1].x == tx
             && this.balls[1].y == ty) {
@@ -20,8 +20,8 @@ function check_backards(x, y) {
 
 function check_collision(x, y) {
     return new Promise((resolve, reject) => {
-        let tx = this.balls[0].x + x;
-        let ty = this.balls[0].y + y;
+        let tx = util.mod(this.balls[0].x + x, 600);
+        let ty = util.mod(this.balls[0].y + y, 600);
 
         if(this.positions[[tx, ty]] <= this.balls.length) {
             reject({code: 1, err: 'A collision has occurred.'})
