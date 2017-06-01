@@ -1,10 +1,17 @@
 'use strict';
 
+let canvas = document.getElementById('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+conf.WIDTH = canvas.width;
+conf.HEIGHT = canvas.height;
+
 function Game(canvas){
     this.ctx = canvas.getContext('2d');
-    window.addEventListener('keydown', move.bind(this), false);
     this.generador = generate_balls(100, 10);
-    this.wormi = new Worm();
+    this.baller = new Baller(this.generador);
+    this.wormi = new Worm(this.baller);
     this.state = true;
     this.directions = {
         'N': [-1, 0],
@@ -15,17 +22,21 @@ function Game(canvas){
 
     this.actual_direction = 'W';
     this.safe_direction = 'W';
+
+    //Rollback mechanism
     this.wormi.rollback = rollback.bind(this);
+
+    //Setting up the head
     this.wormi.add(this.generador.next().value);
-    this.wormi.balls[0].setPos(10, 10);
+    this.wormi.balls[0].setPos(20, 0);
 
-    for(let i=0; i<15; i++) {
-        this.wormi.add(this.generador.next().value);
-    }
-
-    this.test = this.generador.next().value;
-    this.test.setPos(70, 70);
-    this.wormi.positions[[70, 70]] = this.test.idx;
+    this.food = undefined;
+    this.baller.dispatch()
+    .then(ball => {
+        this.food = ball;
+        console.log(this.food);
+        this.wormi.positions[[this.food.x, this.food.y]] = this.food.idx;
+    })
 
     this.interval = setInterval(loop.bind(this), 60);
 };
@@ -44,10 +55,12 @@ function loop() {
     }
     let dir = this.directions[this.actual_direction];
     this.wormi.move(dir[1] * 20, dir[0] * 20);
-    this.ctx.clearRect(0, 0, 600, 600);
+    this.ctx.clearRect(0, 0, conf.WIDTH, conf.HEIGHT);
     this.wormi.paint(this.ctx);
-    this.test.paint(this.ctx);
 
+    if(this.food !== undefined)
+        this.food.paint(this.ctx);
 }
 
-new Game(document.getElementById('canvas'));
+let game = new Game(canvas);
+window.addEventListener('keydown', move.bind(game), false);

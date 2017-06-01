@@ -13,8 +13,8 @@ class Ball {
         this.y = y;
     }
     move(x, y) {
-        this.x = util.mod((this.x + x), 600);
-        this.y = util.mod((this.y + y), 600);
+        this.x = util.mod((this.x + x), conf.WIDTH);
+        this.y = util.mod((this.y + y), conf.HEIGHT);
     }
     paint(ctx) {
         ctx.strokeStyle = this.color;
