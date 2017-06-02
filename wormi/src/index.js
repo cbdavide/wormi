@@ -11,8 +11,14 @@ function Game(canvas){
     this.ctx = canvas.getContext('2d');
     this.generador = generate_balls(100, 10);
     this.baller = new Baller(this.generador);
-    this.wormi = new Worm(this.baller);
-    this.state = true;
+
+    this.state = {
+        score: 0,
+        state: true,
+        food: undefined
+    };
+
+    this.wormi = new Worm(this.state);
     this.directions = {
         'N': [-1, 0],
         'W': [0, 1],
@@ -30,15 +36,13 @@ function Game(canvas){
     this.wormi.add(this.generador.next().value);
     this.wormi.balls[0].setPos(20, 0);
 
-    this.food = undefined;
     this.baller.dispatch()
     .then(ball => {
-        this.food = ball;
-        console.log(this.food);
-        this.wormi.positions[[this.food.x, this.food.y]] = this.food.idx;
-    })
+        this.state.food = ball;
+        console.log(this.state.food);
+    });
 
-    this.interval = setInterval(loop.bind(this), 60);
+    this.interval = setInterval(loop.bind(this), 120);
 };
 
 function rollback() {
@@ -48,18 +52,32 @@ function rollback() {
 }
 
 function loop() {
-    if(this.state === false) {
+    if(this.state.state === false) {
         console.log('GAME OVER!!!');
         clearInterval(this.interval);
         return;
     }
+
     let dir = this.directions[this.actual_direction];
     this.wormi.move(dir[1] * 20, dir[0] * 20);
     this.ctx.clearRect(0, 0, conf.WIDTH, conf.HEIGHT);
     this.wormi.paint(this.ctx);
 
-    if(this.food !== undefined)
-        this.food.paint(this.ctx);
+    if(this.state.food === undefined) {
+        //REMOVE THIS FROM HERE
+        //Generar una nueva bola después de un segundo
+        setTimeout(() => {
+            this.baller.dispatch()
+            .then(ball => {
+                this.state.food = ball;
+            });
+        }, 1000);
+
+    } else {
+        this.state.food.paint(this.ctx);
+    }
+
+
 }
 
 let game = new Game(canvas);

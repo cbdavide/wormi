@@ -28,9 +28,10 @@ class Ball {
 }
 
 class Worm {
-    constructor() {
+    constructor(state) {
         this.balls = [];
         this.positions = {};
+        this.game_state = state;
     }
     add(ball) {
         this.balls.push(ball);
@@ -39,9 +40,11 @@ class Worm {
         let f = movement_middlewares;
 
         Promise.all(f.map(func => {return func.call(this, x, y)}))
-        .then(() => { // The worm can move
+        .then((obj) => { // The worm can move
+            // console.log(obj);
             let tx = this.balls[0].x;
             let ty = this.balls[0].y;
+
             this.balls[0].move(x, y);
             for(let i=1; i<this.balls.length; i++) {
                 let xx = this.balls[i].x;
@@ -51,12 +54,22 @@ class Worm {
                 this.balls[i].setPos(tx, ty);
                 tx = xx; ty = yy;
             }
+
+            if(obj[2].code === 'red') { //Encontro una bola
+                console.log(obj[2]);
+                this.add(this.game_state.food);
+                this.game_state.food = undefined;
+                this.game_state.score += 20;
+                console.log(this.game_state.score);
+            }
         })
         .catch((err) => {
             //TODO: Handle the error
             if(err.code === 0) {
                 //The direction shouldn't be changed
                 this.rollback();
+            } else if(err.code === 1) {
+                this.game_state.state = false;
             }
             console.log(err);
         })
