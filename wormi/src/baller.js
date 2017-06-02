@@ -10,7 +10,9 @@ class Baller {
         return new Promise((resolve, reject) =>{
             if(res.done) reject({code: 2, err: 'No hay más bolas :v'});
             else  {
-                res.value.setPos(49 * 20, 300);
+                let x = util.random(20, conf.WIDTH);
+                let y = util.random(20, conf.HEIGHT);
+                res.value.setPos(x, y);
                 resolve(res.value);
             }
         });
