@@ -14,7 +14,7 @@ function Game(canvas){
 
     this.state = {
         score: 0,
-        state: true,
+        state: false,
         food: undefined
     };
 
@@ -55,6 +55,12 @@ function loop() {
     if(this.state.state === false) {
         console.log('GAME OVER!!!');
         clearInterval(this.interval);
+
+        send('guest', this.state.score)
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+
         return;
     }
 
@@ -77,7 +83,13 @@ function loop() {
         this.state.food.paint(this.ctx);
     }
 
+}
 
+function send(name, score) {
+    return fetch('/arcade', {
+        method: 'POST',
+        body: {name, score}
+    })
 }
 
 let game = new Game(canvas);
