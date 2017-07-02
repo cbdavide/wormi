@@ -1,15 +1,27 @@
+<!DOCTYPE html>
 <html>
-<head>
-<head>
-<body>
- <div id="juegoUno">
-  <a href="wormi/index.html"> Wormi </a>
- </div>
- <div>
-  <a href="naves/naves-javascript.html"> Juego 2 </a>
- </div>
- <div>
-  <a href="starfox/starfox.html"/> Juego 3 </a>
- </div>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <title>Wormi</title>
+        <style media="screen">
+            * {margin: 0; padding: 0;}
+            html, body {
+                width: 0;
+            }
+            canvas {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" width="1000px" height="600px">
+        </canvas>
+        <script src="src/util.js"></script>
+        <script src="src/movement_middleware.js"></script>
+        <script src="src/ball.js"></script>
+        <script src="src/conf.js"></script>
+        <script src="src/events.js"></script>
+        <script src="src/baller.js"></script>
+        <script src="src/index.js"></script>
+    </body>
 </html>
